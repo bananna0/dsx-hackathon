@@ -17,6 +17,14 @@ public class CreateDeals extends BaseTest {
     }
 
     @Test
+    public void twoOrdersMatchingCorrectPrice() {
+        testExchange.openOrder(eurusd, 1, 2, OrderDirection.SELL, 1, addressClient1, signClient1);
+        testExchange.openOrder(eurusd, 1, 3, OrderDirection.BUY, 2, addressClient2, signClient2);
+        ArrayList<Trade> trades = smartContractInterfaceMock.trades;
+        Assert.assertEquals(trades.get(0).getPrice(), 2);
+    }
+
+    @Test
     public void moreThanOneDeal() {
         testExchange.openOrder(eurusd, 1, 1, OrderDirection.SELL, 1, addressClient1, signClient1);
         testExchange.openOrder(eurusd, 1, 1, OrderDirection.SELL, 2, addressClient1, signClient1);
