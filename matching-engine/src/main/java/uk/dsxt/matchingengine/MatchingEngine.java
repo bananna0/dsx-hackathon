@@ -4,9 +4,12 @@ import lombok.extern.log4j.Log4j2;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
 import uk.dsxt.matchingengine.datamodel.Order;
+import uk.dsxt.matchingengine.datamodel.OrderBook;
+import uk.dsxt.matchingengine.datamodel.OrderBookRow;
 import uk.dsxt.matchingengine.datamodel.PriceLevel;
 import uk.dsxt.matchingengine.datamodel.Trade;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -140,4 +143,16 @@ public class MatchingEngine {
         return false;
     }
 
+    public synchronized OrderBook getOrderBook() {
+        OrderBookRow[] sellRows = toOrderBookRow(sellSide);
+        OrderBookRow[] buyRows = toOrderBookRow(buySide);
+        return new OrderBook(sellRows, buyRows);
+    }
+
+    private OrderBookRow[] toOrderBookRow(Queue<PriceLevel> side) {
+        return side.stream().map(level ->
+                new OrderBookRow(level.getPrice(),
+                        level.getOrders().stream().map(Order::getAmount).reduce(0L, (v1, v2) -> v1 + v2))).
+                toArray(OrderBookRow[]::new);
+    }
 }

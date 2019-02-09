@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
+import uk.dsxt.matchingengine.datamodel.OrderBook;
 
 @Log4j2
 public class Exchange implements ExchangeInterface {
@@ -34,6 +35,14 @@ public class Exchange implements ExchangeInterface {
     public boolean cancelOrder(long clientOrderId) {
         log.debug("cancelOrder, clientOrderId={}", clientOrderId);
         return engine.cancelOrder(clientOrderId);
+    }
+
+    public OrderBook getOrderbook(String currencyPair) {
+        if (!currencyPair.equalsIgnoreCase("EURUSD")) {
+            log.warn("Unsupported currency pair: {}", currencyPair);
+            return null;
+        }
+        return engine.getOrderBook();
     }
 
 }
