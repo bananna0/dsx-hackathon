@@ -6,5 +6,6 @@ public class BaseTest {
     public static final String addressClient2 = "address2";
     public static final String signClient1 = "sign1";
     public static final String signClient2 = "sign2";
-    public Exchange testExchange = new Exchange(new SmartContractInterfaceMockImpl());
+    public SmartContractInterfaceMockImpl smartContractInterfaceMock = new SmartContractInterfaceMockImpl();
+    public Exchange testExchange = new Exchange(smartContractInterfaceMock);
 }
