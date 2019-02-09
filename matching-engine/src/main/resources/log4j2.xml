@@ -1,48 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" strict="true" name="XMLConfigTest"
-               packages="org.apache.logging.log4j.test">
-    <Properties>
-        <Property name="filename">exchange.log</Property>
-    </Properties>
-    <Filter type="ThresholdFilter" level="trace"/>
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="info" name="engine" packages="">
     <Appenders>
-        <Appender type="Console" name="STDOUT">
-            <Layout type="PatternLayout" pattern="%m MDC%X%n"/>
-            <Filters>
-                <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
-            </Filters>
-        </Appender>
-        <Appender type="Console" name="FLOW">
-            <Layout type="PatternLayout" pattern="%C{1}.%M %m %ex%n"/><!-- class and line number -->
-            <Filters>
-                <Filter type="MarkerFilter" marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
-                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
-            </Filters>
-        </Appender>
-        <Appender type="File" name="File" fileName="${filename}">
-            <Layout type="PatternLayout">
-                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-            </Layout>
-        </Appender>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%p] [%t] %c{2} %m%n"/>
+        </Console>
+
+        <File name="FILE" fileName="logs/engine.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+        </File>
     </Appenders>
-
     <Loggers>
-        <Logger name="uk.dsxt" level="debug" additivity="false">
-            <Filter type="ThreadContextMapFilter">
-                <KeyValuePair key="test" value="123"/>
-            </Filter>
-            <AppenderRef ref="STDOUT"/>
+        <Logger name="engine" level="debug" includeLocation="true" additivity="false">
+            <AppenderRef ref="engine"/>
         </Logger>
-
-        <Logger name="uk.dsxt" level="debug" additivity="false">
-            <AppenderRef ref="File"/>
-        </Logger>
-
-        <Root level="trace">
+        <Root level="debug">
             <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="FILE"/>
         </Root>
     </Loggers>
-
 </Configuration>
