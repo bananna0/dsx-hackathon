@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 
 public class SmartContractSender {
 
-    ExecutorService senderThread = Executors.newSingleThreadExecutor(r -> new Thread(r, "Trades sender"));
+    private ExecutorService senderThread = Executors.newSingleThreadExecutor(r -> new Thread(r, "Trades sender"));
 
     private SmartContractInterface smartContractInterface;
 
