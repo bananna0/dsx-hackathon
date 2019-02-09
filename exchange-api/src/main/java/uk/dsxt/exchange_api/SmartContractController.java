@@ -22,7 +22,8 @@ public class SmartContractController {
 
     @PostMapping(value = "/lockMoney", produces = "application/json")
     @ResponseBody
-    public boolean lockMoney(@RequestParam long amount, @RequestParam String signature) {
-        return smartContractInterface.lockMoney(amount, signature);
+    public boolean lockMoney(@RequestParam long amount, @RequestParam String address, @RequestParam String signature) {
+        log.debug("lockMoney, amount={}, address={}, signature={}", amount, address, signature);
+        return smartContractInterface.lockMoney(amount, address, signature);
     }
 }
