@@ -2,7 +2,7 @@ pragma solidity ^0.5.1;
 pragma experimental ABIEncoderV2;
 
 contract StandardToken {
-    
+
     struct currencyPair {
         string baseCur;
         string quotedCur;
@@ -14,26 +14,30 @@ contract StandardToken {
         currencyPair pair;
         bool isBuy;
     }
-    mapping (address => mapping (string => uint)) addressToWallet;
+    mapping (address => mapping(string => uint)) addressToWallet;
     mapping (address => mapping(string => order)) orderList;
     
     function deposit(string memory currency, uint amount) public {
         addressToWallet[msg.sender][currency] += amount;
     }
     
-    function createOrder(uint amount, uint rate, string memory orderId, string memory signature, currencyPair memory pair, bool isBuy) public {
+    function createOrder(address userAddress, uint amount, uint rate, string memory orderId, string memory signature, string memory baseCur, string memory quotedCur, bool isBuy) public {
+        currencyPair memory pair = currencyPair({
+            baseCur: baseCur,
+            quotedCur: quotedCur
+        });
         if (isBuy) {
-           uint currentAmount = addressToWallet[msg.sender][pair.quotedCur];
+           uint currentAmount = addressToWallet[userAddress][pair.quotedCur];
            require(amount * rate <= currentAmount);
-           addressToWallet[msg.sender][pair.quotedCur] -= amount * rate;
+           addressToWallet[userAddress][pair.quotedCur] -= amount * rate;
         } else {
-           uint currentAmount = addressToWallet[msg.sender][pair.baseCur];
+           uint currentAmount = addressToWallet[userAddress][pair.baseCur];
            require(amount <= currentAmount);
-           addressToWallet[msg.sender][pair.baseCur] -= amount;
+           addressToWallet[userAddress][pair.baseCur] -= amount;
         }
         
         order memory newOrder = order({amount: amount, rate: rate, pair: pair, isBuy: isBuy});
-        orderList[msg.sender][orderId] = newOrder;
+        orderList[userAddress][orderId] = newOrder;
     }
     
     function deal(string memory orderIdA, string memory orderIdB, address addressA, address addressB, uint rate, uint amount) public {
@@ -61,8 +65,8 @@ contract StandardToken {
         }
     }
     
-    function getState() public view returns (order memory currentOrder) {
-        mapping (string => order) storage orders = orderList[msg.sender];
-        currentOrder = orders['TEST'];
+    
+    function getState() public view returns(order memory orderA, order memory orderB, uint balanceA1, uint balanceA2, uint balanceB1, uint balanceB2) {
+        
     }
 }
