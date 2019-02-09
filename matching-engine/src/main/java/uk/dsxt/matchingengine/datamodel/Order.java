@@ -16,16 +16,4 @@ public class Order {
     private long clientOrderId;
     private String address;
     private String sign;
-
-    public Order(String currencyPair, long time, long amount, long price, OrderDirection direction, long clientOrderId) {
-        this.currencyPair = currencyPair;
-        this.time = time;
-        this.amount = amount;
-        this.initialAmount = amount;
-        this.price = price;
-        this.direction = direction;
-        this.clientOrderId = clientOrderId;
-        this.address = "";
-        this.sign = "";
-    }
 }

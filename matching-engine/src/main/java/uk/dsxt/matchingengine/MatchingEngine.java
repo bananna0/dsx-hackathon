@@ -30,7 +30,9 @@ public class MatchingEngine {
         this.buySide = new PriorityQueue<>(PriceLevel.buyComparator);
     }
 
-    public OpenOrderResult openOrder(Order orderToOpen) {
+    public OpenOrderResult openOrder(String currencyPair, long amount, long price, OrderDirection direction, long clientOrderId, String address, String sign) {
+        Order orderToOpen = new Order(currencyPair, System.currentTimeMillis(), amount, amount, price, direction, clientOrderId, address, sign);
+
         log.debug("openOrder called: {}", orderToOpen.toString());
 
         if (orderToOpen == null || orderToOpen.getPrice() <= 0 || orderToOpen.getAmount() <= 0) {

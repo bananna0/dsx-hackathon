@@ -18,8 +18,7 @@ public class Exchange implements ExchangeInterface {
             return OpenOrderResult.FAILED;
         }
 
-//        return engine.openOrder(new Order(currencyPair, amount, 0, price, direction, clientOrderId, address, sign));
-        return OpenOrderResult.SUCCESS;
+        return engine.openOrder(currencyPair, amount, price, direction, clientOrderId, address, sign);
     }
 
     @Override
