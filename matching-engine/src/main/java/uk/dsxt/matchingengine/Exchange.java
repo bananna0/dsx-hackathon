@@ -32,9 +32,9 @@ public class Exchange implements ExchangeInterface {
     }
 
     @Override
-    public boolean cancelOrder(long clientOrderId) {
-        log.debug("cancelOrder, clientOrderId={}", clientOrderId);
-        return engine.cancelOrder(clientOrderId);
+    public boolean cancelOrder(long clientOrderId, String address, String sign) {
+        log.debug("cancelOrder, clientOrderId={}, address={}, sign={}", clientOrderId, address, sign);
+        return engine.cancelOrder(clientOrderId, address, sign);
     }
 
     public OrderBook getOrderbook(String currencyPair) {

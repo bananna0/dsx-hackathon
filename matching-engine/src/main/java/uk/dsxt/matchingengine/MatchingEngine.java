@@ -124,18 +124,18 @@ public class MatchingEngine {
         }
     }
 
-    public synchronized boolean cancelOrder(long clientOrderId) {
-        if (cancelOrderInSide(clientOrderId, sellSide)) return true;
-        if (cancelOrderInSide(clientOrderId, buySide)) return true;
+    public synchronized boolean cancelOrder(long clientOrderId, String address, String sign) {
+        if (cancelOrderInSide(clientOrderId, address, sellSide)) return true;
+        if (cancelOrderInSide(clientOrderId, address, buySide)) return true;
         return false;
     }
 
-    private boolean cancelOrderInSide(long clientOrderId, Queue<PriceLevel> sellSide) {
+    private boolean cancelOrderInSide(long clientOrderId, String address, Queue<PriceLevel> sellSide) {
         for (Iterator<PriceLevel> levelIterator = sellSide.iterator(); levelIterator.hasNext(); ) {
             PriceLevel level = levelIterator.next();
             for (Iterator<Order> orderIterator = level.getOrders().iterator(); orderIterator.hasNext(); ) {
                 Order order = orderIterator.next();
-                if (order.getClientOrderId() == clientOrderId) {
+                if (order.getClientOrderId() == clientOrderId && order.getAddress().equals(address)) {
                     orderIterator.remove();
 
                     if (level.getOrders().isEmpty()) {

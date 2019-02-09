@@ -12,4 +12,9 @@ public class SmartContractInterfaceMockImpl implements SmartContractInterface {
         Trade trade = new Trade(number, amount, price);
         trades.add(trade);
     }
+
+    @Override
+    public boolean lockMoney(long amount, String signature) {
+        return false;
+    }
 }
