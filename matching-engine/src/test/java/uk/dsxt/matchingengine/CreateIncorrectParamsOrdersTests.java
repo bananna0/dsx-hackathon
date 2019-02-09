@@ -6,38 +6,50 @@ import org.testng.annotations.Test;
 public class CreateIncorrectParamsOrdersTests extends BaseTest {
 
     @Test
-    public void createSellLimitOrderSuccess() {
-        OpenOrderResult result = testExchange.openOrder(eurusd, 1, 1, OrderDirection.SELL, 1, addressClient1, signClient1);
-        Assert.assertEquals(result, OpenOrderResult.SUCCESS);
-    }
-
-    @Test
-    public void createBuyLimitOrderSuccess() {
-        OpenOrderResult result = testExchange.openOrder(eurusd, 1, 1, OrderDirection.BUY, 1, addressClient1, signClient1);
-        Assert.assertEquals(result, OpenOrderResult.SUCCESS);
-    }
-
-    @Test
-    public void createBuyLimitOrderFailedByPrice() {
+    public void createBuyLimitOrderFailedByNegativePrice() {
         OpenOrderResult result = testExchange.openOrder(eurusd, 1, -1, OrderDirection.BUY, 1, addressClient1, signClient1);
         Assert.assertEquals(result, OpenOrderResult.FAILED);
     }
 
     @Test
-    public void createSellLimitOrderFailedByPrice() {
+    public void createSellLimitOrderFailedByNegativePrice() {
         OpenOrderResult result = testExchange.openOrder(eurusd, 1, -1, OrderDirection.SELL, 1, addressClient1, signClient1);
         Assert.assertEquals(result, OpenOrderResult.FAILED);
     }
 
     @Test
-    public void createBuyLimitOrderFailedByVolume() {
+    public void createBuyLimitOrderFailedByNegativeVolume() {
         OpenOrderResult result = testExchange.openOrder(eurusd, -1, 1, OrderDirection.BUY, 1, addressClient1, signClient1);
         Assert.assertEquals(result, OpenOrderResult.FAILED);
     }
 
     @Test
-    public void createSellLimitOrderFailedByVolume() {
+    public void createSellLimitOrderFailedByNegativeVolume() {
         OpenOrderResult result = testExchange.openOrder(eurusd, -1, 1, OrderDirection.SELL, 1, addressClient1, signClient1);
+        Assert.assertEquals(result, OpenOrderResult.FAILED);
+    }
+
+    @Test
+    public void createBuyLimitOrderFailedByZeroPrice() {
+        OpenOrderResult result = testExchange.openOrder(eurusd, 1, 0, OrderDirection.BUY, 1, addressClient1, signClient1);
+        Assert.assertEquals(result, OpenOrderResult.FAILED);
+    }
+
+    @Test
+    public void createSellLimitOrderFailedByZeroPrice() {
+        OpenOrderResult result = testExchange.openOrder(eurusd, 1, 0, OrderDirection.SELL, 1, addressClient1, signClient1);
+        Assert.assertEquals(result, OpenOrderResult.FAILED);
+    }
+
+    @Test
+    public void createBuyLimitOrderFailedByZeroVolume() {
+        OpenOrderResult result = testExchange.openOrder(eurusd, 0, 1, OrderDirection.BUY, 1, addressClient1, signClient1);
+        Assert.assertEquals(result, OpenOrderResult.FAILED);
+    }
+
+    @Test
+    public void createSellLimitOrderFailedByZeroVolume() {
+        OpenOrderResult result = testExchange.openOrder(eurusd, 0, 1, OrderDirection.SELL, 1, addressClient1, signClient1);
         Assert.assertEquals(result, OpenOrderResult.FAILED);
     }
 
