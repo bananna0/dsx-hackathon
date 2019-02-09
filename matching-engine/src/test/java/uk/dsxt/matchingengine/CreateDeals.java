@@ -84,4 +84,37 @@ public class CreateDeals extends BaseTest {
         ArrayList<Trade> trades = smartContractInterfaceMock.trades;
         Assert.assertEquals(trades.get(0).getAmount(), 1);
     }
+
+    @Test
+    public void differentPricesDealsSellSide(){
+        testExchange.openOrder(eurusd, 2, 1, OrderDirection.SELL, 1, addressClient1, signClient1);
+        testExchange.openOrder(eurusd, 4, 3, OrderDirection.SELL, 2, addressClient2, signClient2);
+        testExchange.openOrder(eurusd, 6, 5, OrderDirection.SELL, 3, addressClient2, signClient2);
+        testExchange.openOrder(eurusd, 12, 5, OrderDirection.BUY, 4, addressClient2, signClient2);
+        waitForTradesCount(3, 1, 100);
+        ArrayList<Trade> trades = smartContractInterfaceMock.trades;
+        Assert.assertEquals(trades.get(0).getAmount(), 2);
+        Assert.assertEquals(trades.get(0).getPrice(), 1);
+        Assert.assertEquals(trades.get(1).getAmount(), 4);
+        Assert.assertEquals(trades.get(1).getPrice(), 3);
+        Assert.assertEquals(trades.get(2).getAmount(), 6);
+        Assert.assertEquals(trades.get(2).getPrice(), 5);
+    }
+
+    @Test
+    public void differentPricesDealsBuySide(){
+        testExchange.openOrder(eurusd, 2, 1, OrderDirection.BUY, 1, addressClient1, signClient1);
+        testExchange.openOrder(eurusd, 4, 3, OrderDirection.BUY, 2, addressClient2, signClient2);
+        testExchange.openOrder(eurusd, 6, 5, OrderDirection.BUY, 3, addressClient2, signClient2);
+        testExchange.openOrder(eurusd, 12, 1, OrderDirection.SELL, 4, addressClient2, signClient2);
+        waitForTradesCount(3, 1, 100);
+        ArrayList<Trade> trades = smartContractInterfaceMock.trades;
+        Assert.assertEquals(trades.get(0).getAmount(), 6);
+        Assert.assertEquals(trades.get(0).getPrice(), 5);
+        Assert.assertEquals(trades.get(1).getAmount(), 4);
+        Assert.assertEquals(trades.get(1).getPrice(), 3);
+        Assert.assertEquals(trades.get(2).getAmount(), 2);
+        Assert.assertEquals(trades.get(2).getPrice(), 1);
+    }
+
 }
