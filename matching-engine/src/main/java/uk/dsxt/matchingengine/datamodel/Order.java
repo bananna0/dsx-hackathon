@@ -15,4 +15,15 @@ public class Order {
     private long clientOrderId;
     private String address;
     private String sign;
+
+    public Order(String currencyPair, long amount, long price, OrderDirection direction, long clientOrderId) {
+        this.currencyPair = currencyPair;
+        this.amount = amount;
+        this.filledAmount = 0;
+        this.price = price;
+        this.direction = direction;
+        this.clientOrderId = clientOrderId;
+        this.address = "";
+        this.sign = "";
+    }
 }

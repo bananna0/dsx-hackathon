@@ -1,12 +1,15 @@
 package uk.dsxt.matchingengine;
 
+import lombok.extern.log4j.Log4j2;
 import uk.dsxt.matchingengine.datamodel.Order;
 import uk.dsxt.matchingengine.datamodel.PriceLevel;
+import uk.dsxt.matchingengine.datamodel.Trade;
 
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+@Log4j2
 public class MatchingEngine {
     private String currencyPair;
 
@@ -15,18 +18,50 @@ public class MatchingEngine {
 
     public MatchingEngine(String currencyPair) {
         currencyPair = currencyPair;
-        System.out.println("Initializing matching engine for " + currencyPair);
+        log.info("Initializing matching engine for {}", currencyPair);
 
         this.sellSide = new PriorityQueue<>();
         this.buySide = new PriorityQueue<>();
     }
 
-    public void openOrder(Order order) {
-        switch (order.getDirection()) {
+    public OpenOrderResult openOrder(Order newOrder) {
+        log.debug("openOrder called: {}", newOrder.toString());
+
+        if (newOrder == null) {
+            return OpenOrderResult.FAILED;
+        }
+
+        switch (newOrder.getDirection()) {
             case BUY: {
 
-                for (Iterator<PriceLevel> iterator = sellSide.iterator(); iterator.hasNext(); ) {
-                    PriceLevel priceLevel = iterator.next();
+                for (Iterator<PriceLevel> levelIterator = sellSide.iterator(); levelIterator.hasNext(); ) {
+                    PriceLevel level = levelIterator.next();
+
+                    if (newOrder.getPrice() < level.getPrice()) {
+
+                        // TODO put order to buy side
+
+                        return OpenOrderResult.SUCCESS;
+                    } else {
+                        for (Iterator<Order> orderIterator = level.getOrders().iterator(); orderIterator.hasNext(); ) {
+                            Order order = orderIterator.next();
+
+                            long minAmount = Long.min(newOrder.getAmount(), order.getAmount());
+
+                            long orderAmountUpdated = order.getAmount() - minAmount;
+                            order.setAmount(orderAmountUpdated);
+
+                            long newOrderAmountUpdated = newOrder.getAmount() - minAmount;
+                            newOrder.setAmount(newOrderAmountUpdated);
+
+                            Trade trade = new Trade(minAmount, level.getPrice());
+
+                            if (orderAmountUpdated == 0) {
+                                orderIterator.remove();
+                            }
+
+                        }
+                    }
 
                 }
 
@@ -36,6 +71,9 @@ public class MatchingEngine {
 
             }
         }
+
+        // TODO Remove it
+        return OpenOrderResult.FAILED;
     }
 
 }
