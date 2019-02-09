@@ -1,4 +1,4 @@
-package uk.dsxt.matchingengine.datamodel;
+package uk.dsxt.common.datamodel;
 
 public enum OpenOrderResultCode {
     SUCCESS,

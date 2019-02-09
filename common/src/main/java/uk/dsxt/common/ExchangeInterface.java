@@ -1,6 +1,8 @@
-package uk.dsxt.matchingengine;
+package uk.dsxt.common;
 
-import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
+
+import uk.dsxt.common.datamodel.OpenOrderResult;
+import uk.dsxt.common.datamodel.OrderDirection;
 
 public interface ExchangeInterface {
 

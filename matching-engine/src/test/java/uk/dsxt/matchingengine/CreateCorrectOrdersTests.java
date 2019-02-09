@@ -2,8 +2,9 @@ package uk.dsxt.matchingengine;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
+import uk.dsxt.common.datamodel.OpenOrderResult;
+import uk.dsxt.common.datamodel.OpenOrderResultCode;
+import uk.dsxt.common.datamodel.OrderDirection;
 
 public class CreateCorrectOrdersTests extends BaseTest {
     @Test

@@ -3,7 +3,8 @@ package uk.dsxt.matchingengine;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import uk.dsxt.matchingengine.datamodel.Trade;
+import uk.dsxt.common.datamodel.OrderDirection;
+import uk.dsxt.common.datamodel.Trade;
 
 import java.util.ArrayList;
 

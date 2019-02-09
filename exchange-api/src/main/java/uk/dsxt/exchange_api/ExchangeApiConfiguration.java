@@ -2,9 +2,9 @@ package uk.dsxt.exchange_api;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uk.dsxt.common.ExchangeInterface;
+import uk.dsxt.common.SmartContractInterface;
 import uk.dsxt.matchingengine.Exchange;
-import uk.dsxt.matchingengine.ExchangeInterface;
-import uk.dsxt.matchingengine.SmartContractInterface;
 import uk.dsxt.matchingengine.SmartContractInterfaceImpl;
 
 @Configuration

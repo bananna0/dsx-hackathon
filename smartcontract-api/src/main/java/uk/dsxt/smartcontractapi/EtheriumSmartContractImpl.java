@@ -3,7 +3,7 @@ package uk.dsxt.smartcontractapi;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.admin.Admin;
 import org.web3j.protocol.http.HttpService;
-import uk.dsxt.matchingengine.SmartContractInterface;
+import uk.dsxt.common.SmartContractInterface;
 
 public class EtheriumSmartContractImpl implements SmartContractInterface {
 
@@ -21,7 +21,7 @@ public class EtheriumSmartContractImpl implements SmartContractInterface {
     }
 
     @Override
-    public boolean lockMoney(long amount, String signature) {
+    public boolean lockMoney(long amount, String address, String signature) {
         return false;
     }
 
