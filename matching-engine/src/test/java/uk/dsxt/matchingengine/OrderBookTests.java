@@ -15,6 +15,16 @@ public class OrderBookTests extends BaseTest {
 
     @Test
     public void checkBuyOneOrder() {
+        testExchange.openOrder(eurusd, 4, 3, OrderDirection.BUY, 1, addressClient1, signClient1);
+        OrderBook orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getBuySide().length, 1);
+        Assert.assertEquals(orderBook.getBuySide()[0].getPrice(), 3);
+        Assert.assertEquals(orderBook.getBuySide()[0].getVolume(), 4);
+        Assert.assertEquals(orderBook.getSellSide().length, 0);
+    }
+
+    @Test
+    public void checkSellOneOrder() {
         testExchange.openOrder(eurusd, 4, 3, OrderDirection.SELL, 1, addressClient1, signClient1);
         OrderBook orderBook = testExchange.getOrderbook(eurusd);
         Assert.assertEquals(orderBook.getSellSide().length, 1);
@@ -23,9 +33,27 @@ public class OrderBookTests extends BaseTest {
         Assert.assertEquals(orderBook.getBuySide().length, 0);
     }
 
-    //TODO same test with sell side
+    @Test
+    public void checkBuyAllAndPlaceSell() {
+        testExchange.openOrder(eurusd, 4, 3, OrderDirection.SELL, 1, addressClient1, signClient1);
+        testExchange.openOrder(eurusd, 4 + 1, 3, OrderDirection.BUY, 1, addressClient1, signClient1);
+        OrderBook orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getSellSide().length, 0);
+        Assert.assertEquals(orderBook.getBuySide().length, 1);
+        Assert.assertEquals(orderBook.getBuySide()[0].getPrice(), 3);
+        Assert.assertEquals(orderBook.getBuySide()[0].getVolume(), 1);
+    }
 
-    //TODO test when place LIMIT order with grater amount that filled
+    @Test
+    public void checkSellAllAndPlaceBuy() {
+        testExchange.openOrder(eurusd, 4, 3, OrderDirection.BUY, 1, addressClient1, signClient1);
+        testExchange.openOrder(eurusd, 4 + 1, 3, OrderDirection.SELL, 1, addressClient1, signClient1);
+        OrderBook orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getBuySide().length, 0);
+        Assert.assertEquals(orderBook.getSellSide().length, 1);
+        Assert.assertEquals(orderBook.getSellSide()[0].getPrice(), 3);
+        Assert.assertEquals(orderBook.getSellSide()[0].getVolume(), 1);
+    }
 
     /**
      * Make order and look that orderbook has been created
