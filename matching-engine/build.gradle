@@ -14,5 +14,5 @@ repositories {
 dependencies {
     compile "org.projectlombok:lombok:1.18.4"
 
-    testCompile group: 'org.testng', name: 'testng', version: '5.7'
+    testCompile group: 'org.testng', name: 'testng', version: '6.10'
 }
