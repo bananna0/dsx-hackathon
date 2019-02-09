@@ -1,5 +1,7 @@
 package uk.dsxt.matchingengine;
 
+import uk.dsxt.common.datamodel.OrderDirection;
+
 public class FilledOrdersTests extends BaseTest {
 
     public void fullyFilledOrders() {

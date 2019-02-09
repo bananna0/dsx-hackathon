@@ -3,7 +3,8 @@ package uk.dsxt.matchingengine;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import uk.dsxt.matchingengine.datamodel.OrderBook;
+import uk.dsxt.common.datamodel.OrderBook;
+import uk.dsxt.common.datamodel.OrderDirection;
 
 public class OrderBookTests extends BaseTest {
 

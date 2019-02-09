@@ -2,6 +2,7 @@ package uk.dsxt.matchingengine;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import uk.dsxt.common.datamodel.OrderDirection;
 
 public class CancelOrdersTests extends BaseTest{
 

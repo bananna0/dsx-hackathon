@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import uk.dsxt.matchingengine.ExchangeInterface;
-import uk.dsxt.matchingengine.OrderDirection;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
+import uk.dsxt.common.ExchangeInterface;
+import uk.dsxt.common.datamodel.OrderDirection;
+import uk.dsxt.common.datamodel.OpenOrderResult;
 
 @RestController
 @Validated
@@ -33,6 +33,6 @@ public class ExchangeController {
     @DeleteMapping(value = "/orders/{clientOrderId}", produces = "application/json")
     @ResponseBody
     public boolean cancelOrder(@PathVariable long clientOrderId) {
-        return exchangeInterface.cancelOrder(clientOrderId);
+        return exchangeInterface.cancelOrder(clientOrderId, null, null);
     }
 }

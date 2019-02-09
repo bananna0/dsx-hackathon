@@ -1,10 +1,13 @@
 package uk.dsxt.matchingengine;
 
 import lombok.extern.log4j.Log4j2;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
-import uk.dsxt.matchingengine.datamodel.OrderBook;
+import uk.dsxt.common.ExchangeInterface;
+import uk.dsxt.common.SmartContractInterface;
+import uk.dsxt.common.datamodel.OpenOrderResult;
+import uk.dsxt.common.datamodel.OpenOrderResultCode;
+import uk.dsxt.common.datamodel.OpenOrderResultInternal;
+import uk.dsxt.common.datamodel.OrderBook;
+import uk.dsxt.common.datamodel.OrderDirection;
 
 @Log4j2
 public class Exchange implements ExchangeInterface {

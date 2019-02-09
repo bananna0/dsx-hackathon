@@ -1,7 +1,8 @@
 package uk.dsxt.matchingengine;
 
 import lombok.extern.log4j.Log4j2;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
+import uk.dsxt.common.datamodel.OpenOrderResultInternal;
+import uk.dsxt.common.datamodel.OrderDirection;
 
 @Log4j2
 public class Launcher {

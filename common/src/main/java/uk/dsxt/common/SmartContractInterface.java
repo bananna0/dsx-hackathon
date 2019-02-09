@@ -1,4 +1,4 @@
-package uk.dsxt.matchingengine;
+package uk.dsxt.common;
 
 public interface SmartContractInterface {
 

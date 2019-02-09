@@ -1,7 +1,8 @@
 package uk.dsxt.matchingengine;
 
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
-import uk.dsxt.matchingengine.datamodel.Trade;
+import uk.dsxt.common.SmartContractInterface;
+import uk.dsxt.common.datamodel.OpenOrderResultInternal;
+import uk.dsxt.common.datamodel.Trade;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

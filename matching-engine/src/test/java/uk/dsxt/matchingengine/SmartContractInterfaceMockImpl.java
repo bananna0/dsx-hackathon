@@ -1,6 +1,7 @@
 package uk.dsxt.matchingengine;
 
-import uk.dsxt.matchingengine.datamodel.Trade;
+import uk.dsxt.common.SmartContractInterface;
+import uk.dsxt.common.datamodel.Trade;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class SmartContractInterfaceMockImpl implements SmartContractInterface {
     }
 
     @Override
-    public boolean lockMoney(long amount, String signature) {
+    public boolean lockMoney(long amount, String address, String signature) {
         return false;
     }
 }

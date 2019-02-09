@@ -1,13 +1,14 @@
 package uk.dsxt.matchingengine;
 
 import lombok.extern.log4j.Log4j2;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
-import uk.dsxt.matchingengine.datamodel.Order;
-import uk.dsxt.matchingengine.datamodel.OrderBook;
-import uk.dsxt.matchingengine.datamodel.OrderBookRow;
-import uk.dsxt.matchingengine.datamodel.PriceLevel;
-import uk.dsxt.matchingengine.datamodel.Trade;
+import uk.dsxt.common.datamodel.OpenOrderResultCode;
+import uk.dsxt.common.datamodel.OpenOrderResultInternal;
+import uk.dsxt.common.datamodel.Order;
+import uk.dsxt.common.datamodel.OrderBook;
+import uk.dsxt.common.datamodel.OrderBookRow;
+import uk.dsxt.common.datamodel.OrderDirection;
+import uk.dsxt.common.datamodel.PriceLevel;
+import uk.dsxt.common.datamodel.Trade;
 
 import java.util.ArrayList;
 import java.util.Iterator;

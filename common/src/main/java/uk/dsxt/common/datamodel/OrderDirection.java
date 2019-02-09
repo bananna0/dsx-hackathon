@@ -1,4 +1,4 @@
-package uk.dsxt.matchingengine;
+package uk.dsxt.common.datamodel;
 
 public enum OrderDirection {
     BUY,

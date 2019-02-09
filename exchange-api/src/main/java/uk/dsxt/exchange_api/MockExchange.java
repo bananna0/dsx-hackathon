@@ -1,10 +1,10 @@
 package uk.dsxt.exchange_api;
 
 import lombok.extern.log4j.Log4j2;
-import uk.dsxt.matchingengine.ExchangeInterface;
-import uk.dsxt.matchingengine.OrderDirection;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
-import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
+import uk.dsxt.common.ExchangeInterface;
+import uk.dsxt.common.datamodel.OrderDirection;
+import uk.dsxt.common.datamodel.OpenOrderResult;
+import uk.dsxt.common.datamodel.OpenOrderResultCode;
 
 @Log4j2
 public class MockExchange implements ExchangeInterface {
