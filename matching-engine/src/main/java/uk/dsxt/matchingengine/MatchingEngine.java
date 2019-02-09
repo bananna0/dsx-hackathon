@@ -9,7 +9,6 @@ import uk.dsxt.matchingengine.datamodel.OrderBookRow;
 import uk.dsxt.matchingengine.datamodel.PriceLevel;
 import uk.dsxt.matchingengine.datamodel.Trade;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,8 +28,8 @@ public class MatchingEngine {
     private List<Trade> trades;
 
     public MatchingEngine(String currencyPair) {
-        currencyPair = currencyPair;
         log.info("Initializing matching engine for {}", currencyPair);
+        this.currencyPair = currencyPair;
 
         this.orderNumber = 1;
         this.tradeNumber = 1;
@@ -83,11 +82,18 @@ public class MatchingEngine {
         }
 
         if (orderToOpen.getAmount() > 0) {
-            if (!otherSide.isEmpty() && (otherSide.peek().getPrice() - orderToOpen.getPrice()) * AI >= 0) {
-                log.error("FATAL EXCEPTION - SERVER STOPPED");
-                System.exit(0);
+            boolean orderOpened = false;
+            for (PriceLevel level : otherSide) {
+                if (orderToOpen.getPrice() == level.getPrice()) {
+                    level.getOrders().add(orderToOpen);
+                    orderOpened = true;
+                    break;
+                }
             }
-            otherSide.add(new PriceLevel(orderToOpen));
+
+            if (!orderOpened) {
+                otherSide.add(new PriceLevel(orderToOpen));
+            }
         }
     }
 
