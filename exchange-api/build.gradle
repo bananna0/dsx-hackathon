@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-log4j2")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.projectlombok:lombok:1.18.4")
@@ -36,9 +37,15 @@ buildscript {
 
 bootJar {
     baseName = 'exchange-api'
-    version =  '0.1'
+    version = '0.1'
 }
 
 repositories {
     mavenCentral()
+}
+
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 }

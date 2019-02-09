@@ -15,6 +15,8 @@ public class Exchange implements ExchangeInterface {
 
     @Override
     public OpenOrderResult openOrder(String currencyPair, long amount, long price, OrderDirection direction, long clientOrderId, String address, String sign) {
+        log.debug("openOrder, currencyPair={}, amount={}, price={}, direction={}, clientOrderId={}, address={}, sign={}",
+                currencyPair, amount, price, direction, clientOrderId, address, sign);
         if (!currencyPair.equalsIgnoreCase("EURUSD")) {
             log.warn("Unsupported currency pair: {}", currencyPair);
             return new OpenOrderResult(-1, OpenOrderResultCode.FAILED);
@@ -25,6 +27,7 @@ public class Exchange implements ExchangeInterface {
 
     @Override
     public boolean cancelOrder(long clientOrderId) {
+        log.debug("cancelOrder, clientOrderId={}", clientOrderId);
         return false;
     }
 
