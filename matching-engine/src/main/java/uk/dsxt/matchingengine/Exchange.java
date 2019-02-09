@@ -3,14 +3,17 @@ package uk.dsxt.matchingengine;
 import lombok.extern.log4j.Log4j2;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
 import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
+import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
 
 @Log4j2
 public class Exchange implements ExchangeInterface {
 
     private MatchingEngine engine;
+    private SmartContractSender smartContractSender;
 
-    public Exchange() {
+    public Exchange(SmartContractInterface smartContractImpl) {
         engine = new MatchingEngine("EURUSD");
+        smartContractSender = new SmartContractSender(smartContractImpl);
     }
 
     @Override
@@ -22,7 +25,9 @@ public class Exchange implements ExchangeInterface {
             return new OpenOrderResult(-1, OpenOrderResultCode.FAILED);
         }
 
-        return engine.openOrder(currencyPair, amount, price, direction, clientOrderId, address, sign).toOpenOrderResult();
+        OpenOrderResultInternal openOrderResultInternal = engine.openOrder(currencyPair, amount, price, direction, clientOrderId, address, sign);
+        smartContractSender.sendDeals(openOrderResultInternal);
+        return openOrderResultInternal.toOpenOrderResult();
     }
 
     @Override
