@@ -14,7 +14,7 @@ public class SmartContractInterfaceMockImpl implements SmartContractInterface {
     }
 
     @Override
-    public boolean lockMoney(long amount, String signature) {
+    public boolean lockMoney(long amount, String address, String signature) {
         return false;
     }
 }
