@@ -27,7 +27,7 @@ public class MatchingEngine {
     public OpenOrderResult openOrder(Order newOrder) {
         log.debug("openOrder called: {}", newOrder.toString());
 
-        if (newOrder == null) {
+        if (newOrder == null || newOrder.getPrice() <= 0 || newOrder.getAmount() <= 0) {
             return OpenOrderResult.FAILED;
         }
 
