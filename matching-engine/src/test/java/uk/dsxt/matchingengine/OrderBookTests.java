@@ -106,4 +106,32 @@ public class OrderBookTests extends BaseTest {
         Assert.assertEquals(orderBook.getSellSide().length, 0);
         Assert.assertEquals(orderBook.getBuySide().length, 0);
     }
+
+    @Test
+    public void checkPlaceAndCancelBuyOrder() {
+        testExchange.openOrder(eurusd, 2, 1, OrderDirection.BUY, 2, addressClient1, signClient1);
+        OrderBook orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getBuySide().length, 1);
+        Assert.assertEquals(orderBook.getBuySide()[0].getPrice(), 1);
+        Assert.assertEquals(orderBook.getBuySide()[0].getVolume(), 2);
+        Assert.assertEquals(orderBook.getSellSide().length, 0);
+        testExchange.cancelOrder(2, addressClient1, signClient1);
+        orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getBuySide().length, 0);
+        Assert.assertEquals(orderBook.getSellSide().length, 0);
+    }
+
+    @Test
+    public void checkPlaceAndCancelSellOrder() {
+        testExchange.openOrder(eurusd, 2, 1, OrderDirection.SELL, 2, addressClient1, signClient1);
+        OrderBook orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getSellSide().length, 1);
+        Assert.assertEquals(orderBook.getSellSide()[0].getPrice(), 1);
+        Assert.assertEquals(orderBook.getSellSide()[0].getVolume(), 2);
+        Assert.assertEquals(orderBook.getBuySide().length, 0);
+        testExchange.cancelOrder(2, addressClient1, signClient1);
+        orderBook = testExchange.getOrderbook(eurusd);
+        Assert.assertEquals(orderBook.getBuySide().length, 0);
+        Assert.assertEquals(orderBook.getSellSide().length, 0);
+    }
 }
