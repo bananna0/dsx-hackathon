@@ -14,11 +14,11 @@ import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
 
 @RestController
 @Validated
-public class TestController {
+public class ExchangeController {
     private final ExchangeInterface exchangeInterface;
 
     @Autowired
-    public TestController(ExchangeInterface exchangeInterface) {
+    public ExchangeController(ExchangeInterface exchangeInterface) {
         this.exchangeInterface = exchangeInterface;
     }
 
