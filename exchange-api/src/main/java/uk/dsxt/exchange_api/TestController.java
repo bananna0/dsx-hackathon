@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.dsxt.matchingengine.ExchangeInterface;
-import uk.dsxt.matchingengine.OpenOrderResult;
 import uk.dsxt.matchingengine.OrderDirection;
+import uk.dsxt.matchingengine.datamodel.OpenOrderResult;
 
 @RestController
 @Validated

@@ -7,6 +7,7 @@ import uk.dsxt.matchingengine.OrderDirection;
 @Data
 @AllArgsConstructor
 public class Order {
+    private long number;
     private String currencyPair;
     private long time;
     private long amount;

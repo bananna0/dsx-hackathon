@@ -1,6 +1,8 @@
 package uk.dsxt.matchingengine;
 
 import lombok.extern.log4j.Log4j2;
+import uk.dsxt.matchingengine.datamodel.OpenOrderResultCode;
+import uk.dsxt.matchingengine.datamodel.OpenOrderResultInternal;
 import uk.dsxt.matchingengine.datamodel.Order;
 import uk.dsxt.matchingengine.datamodel.PriceLevel;
 import uk.dsxt.matchingengine.datamodel.Trade;
@@ -15,28 +17,33 @@ import java.util.Queue;
 public class MatchingEngine {
     private String currencyPair;
 
-    private long dealNumber;
+    private long orderNumber;
+    private long tradeNumber;
 
     private Queue<PriceLevel> sellSide; // top of the orderbook - smbd sell to us
     private Queue<PriceLevel> buySide; // bottom of the orderbook - smbd buy from us
+
+    private List<Trade> trades;
 
     public MatchingEngine(String currencyPair) {
         currencyPair = currencyPair;
         log.info("Initializing matching engine for {}", currencyPair);
 
-        this.dealNumber = 1;
+        this.orderNumber = 1;
+        this.tradeNumber = 1;
+        this.trades = new ArrayList<>();
 
         this.sellSide = new PriorityQueue<>(PriceLevel.sellComparator);
         this.buySide = new PriorityQueue<>(PriceLevel.buyComparator);
     }
 
-    public OpenOrderResult openOrder(String currencyPair, long amount, long price, OrderDirection direction, long clientOrderId, String address, String sign) {
-        Order orderToOpen = new Order(currencyPair, System.currentTimeMillis(), amount, amount, price, direction, clientOrderId, address, sign);
+    public synchronized OpenOrderResultInternal openOrder(String currencyPair, long amount, long price, OrderDirection direction, long clientOrderId, String address, String sign) {
+        log.debug("openOrder called. CurrencyPair={}, Amount={}, Price={}, OrderDirection={}", currencyPair, amount, price, direction);
 
-        log.debug("openOrder called: {}", orderToOpen.toString());
+        Order orderToOpen = new Order(orderNumber++, currencyPair, System.currentTimeMillis(), amount, amount, price, direction, clientOrderId, address, sign);
 
         if (orderToOpen == null || orderToOpen.getPrice() <= 0 || orderToOpen.getAmount() <= 0) {
-            return OpenOrderResult.FAILED;
+            return new OpenOrderResultInternal(orderToOpen.getNumber(), OpenOrderResultCode.FAILED, new ArrayList<>());
         }
 
         switch (orderToOpen.getDirection()) {
@@ -62,7 +69,7 @@ public class MatchingEngine {
                         long orderToOpenAmountUpdated = orderToOpen.getAmount() - minAmount;
                         orderToOpen.setAmount(orderToOpenAmountUpdated);
 
-                        Trade trade = new Trade(dealNumber++, minAmount, level.getPrice());
+                        Trade trade = new Trade(tradeNumber++, minAmount, level.getPrice());
                         log.debug("Trade created: {}" + trade);
                         trades.add(trade);
 
@@ -80,27 +87,28 @@ public class MatchingEngine {
                     }
                 }
 
+                this.trades.addAll(trades);
+
                 if (orderToOpen.getAmount() > 0) {
                     if (!buySide.isEmpty() && buySide.peek().getPrice() >= orderToOpen.getPrice()) {
                         log.error("FATAL EXCEPTION - SERVER STOPPED");
-                        return OpenOrderResult.FATAL_ERROR;
+                        return new OpenOrderResultInternal(orderToOpen.getNumber(), OpenOrderResultCode.FATAL_ERROR, new ArrayList<>());
                     }
                     buySide.add(new PriceLevel(orderToOpen));
                 }
 
-                // TODO Return trades
-
-                return OpenOrderResult.SUCCESS;
-
+                return new OpenOrderResultInternal(orderToOpen.getNumber(), OpenOrderResultCode.SUCCESS, trades);
             }
 
             case SELL: {
+
+                // TODO Implement
 
             }
         }
 
         // TODO Remove it
-        return OpenOrderResult.FAILED;
+        return new OpenOrderResultInternal(orderToOpen.getNumber(), OpenOrderResultCode.FAILED, new ArrayList<>());
     }
 
 }
