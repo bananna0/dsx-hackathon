@@ -115,4 +115,29 @@ public class MatchingEngine {
         }
     }
 
+    public synchronized boolean cancelOrder(long clientOrderId) {
+        if (cancelOrderInSide(clientOrderId, sellSide)) return true;
+        if (cancelOrderInSide(clientOrderId, buySide)) return true;
+        return false;
+    }
+
+    private boolean cancelOrderInSide(long clientOrderId, Queue<PriceLevel> sellSide) {
+        for (Iterator<PriceLevel> levelIterator = sellSide.iterator(); levelIterator.hasNext(); ) {
+            PriceLevel level = levelIterator.next();
+            for (Iterator<Order> orderIterator = level.getOrders().iterator(); orderIterator.hasNext(); ) {
+                Order order = orderIterator.next();
+                if (order.getClientOrderId() == clientOrderId) {
+                    orderIterator.remove();
+
+                    if (level.getOrders().isEmpty()) {
+                        levelIterator.remove();
+                    }
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

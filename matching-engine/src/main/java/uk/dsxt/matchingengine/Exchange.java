@@ -33,7 +33,7 @@ public class Exchange implements ExchangeInterface {
     @Override
     public boolean cancelOrder(long clientOrderId) {
         log.debug("cancelOrder, clientOrderId={}", clientOrderId);
-        return false;
+        return engine.cancelOrder(clientOrderId);
     }
 
 }
