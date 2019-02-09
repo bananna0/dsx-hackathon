@@ -5,7 +5,9 @@ import uk.dsxt.matchingengine.datamodel.Order;
 import uk.dsxt.matchingengine.datamodel.PriceLevel;
 import uk.dsxt.matchingengine.datamodel.Trade;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -24,46 +26,63 @@ public class MatchingEngine {
         this.buySide = new PriorityQueue<>();
     }
 
-    public OpenOrderResult openOrder(Order newOrder) {
-        log.debug("openOrder called: {}", newOrder.toString());
+    public OpenOrderResult openOrder(Order orderToOpen) {
+        log.debug("openOrder called: {}", orderToOpen.toString());
 
-        if (newOrder == null || newOrder.getPrice() <= 0 || newOrder.getAmount() <= 0) {
+        if (orderToOpen == null || orderToOpen.getPrice() <= 0 || orderToOpen.getAmount() <= 0) {
             return OpenOrderResult.FAILED;
         }
 
-        switch (newOrder.getDirection()) {
+        switch (orderToOpen.getDirection()) {
             case BUY: {
+
+                List<Trade> trades = new ArrayList<>();
 
                 for (Iterator<PriceLevel> levelIterator = sellSide.iterator(); levelIterator.hasNext(); ) {
                     PriceLevel level = levelIterator.next();
 
-                    if (newOrder.getPrice() < level.getPrice()) {
+                    if (orderToOpen.getPrice() >= level.getPrice()) {
 
-                        // TODO put order to buy side
-
-                        return OpenOrderResult.SUCCESS;
-                    } else {
                         for (Iterator<Order> orderIterator = level.getOrders().iterator(); orderIterator.hasNext(); ) {
                             Order order = orderIterator.next();
 
-                            long minAmount = Long.min(newOrder.getAmount(), order.getAmount());
+                            long minAmount = Long.min(orderToOpen.getAmount(), order.getAmount());
 
                             long orderAmountUpdated = order.getAmount() - minAmount;
                             order.setAmount(orderAmountUpdated);
 
-                            long newOrderAmountUpdated = newOrder.getAmount() - minAmount;
-                            newOrder.setAmount(newOrderAmountUpdated);
+                            long orderToOpenAmountUpdated = orderToOpen.getAmount() - minAmount;
+                            orderToOpen.setAmount(orderToOpenAmountUpdated);
 
                             Trade trade = new Trade(minAmount, level.getPrice());
+                            log.debug("Trade created: {}" + trade);
+                            trades.add(trade);
 
                             if (orderAmountUpdated == 0) {
                                 orderIterator.remove();
                             }
 
+                            if (orderToOpenAmountUpdated == 0) {
+                                break;
+                            }
                         }
+
+                        if (level.getOrders().isEmpty()) {
+                            levelIterator.remove();
+                        }
+
                     }
+                }
+
+                if (orderToOpen.getAmount() > 0) {
 
                 }
+
+                // TODO put order to buy side
+
+                // TODO Return trades
+
+                return OpenOrderResult.SUCCESS;
 
             }
 
