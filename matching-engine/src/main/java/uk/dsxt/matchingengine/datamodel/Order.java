@@ -8,6 +8,7 @@ import uk.dsxt.matchingengine.OrderDirection;
 @AllArgsConstructor
 public class Order {
     private String currencyPair;
+    private long time;
     private long amount;
     private long initialAmount;
     private long price;
@@ -16,8 +17,9 @@ public class Order {
     private String address;
     private String sign;
 
-    public Order(String currencyPair, long amount, long price, OrderDirection direction, long clientOrderId) {
+    public Order(String currencyPair, long time, long amount, long price, OrderDirection direction, long clientOrderId) {
         this.currencyPair = currencyPair;
+        this.time = time;
         this.amount = amount;
         this.initialAmount = amount;
         this.price = price;

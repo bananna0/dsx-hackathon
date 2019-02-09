@@ -15,6 +15,8 @@ import java.util.Queue;
 public class MatchingEngine {
     private String currencyPair;
 
+    private long dealNumber;
+
     private Queue<PriceLevel> sellSide; // top of the orderbook - smbd sell to us
     private Queue<PriceLevel> buySide; // bottom of the orderbook - smbd buy from us
 
@@ -22,8 +24,10 @@ public class MatchingEngine {
         currencyPair = currencyPair;
         log.info("Initializing matching engine for {}", currencyPair);
 
-        this.sellSide = new PriorityQueue<>();
-        this.buySide = new PriorityQueue<>();
+        this.dealNumber = 1;
+
+        this.sellSide = new PriorityQueue<>(PriceLevel.sellComparator);
+        this.buySide = new PriorityQueue<>(PriceLevel.buyComparator);
     }
 
     public OpenOrderResult openOrder(Order orderToOpen) {
@@ -56,7 +60,7 @@ public class MatchingEngine {
                         long orderToOpenAmountUpdated = orderToOpen.getAmount() - minAmount;
                         orderToOpen.setAmount(orderToOpenAmountUpdated);
 
-                        Trade trade = new Trade(minAmount, level.getPrice());
+                        Trade trade = new Trade(dealNumber++, minAmount, level.getPrice());
                         log.debug("Trade created: {}" + trade);
                         trades.add(trade);
 

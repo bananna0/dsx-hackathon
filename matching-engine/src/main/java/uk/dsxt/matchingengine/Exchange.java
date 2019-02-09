@@ -1,7 +1,6 @@
 package uk.dsxt.matchingengine;
 
 import lombok.extern.log4j.Log4j2;
-import uk.dsxt.matchingengine.datamodel.Order;
 
 @Log4j2
 public class Exchange implements ExchangeInterface {
@@ -19,7 +18,8 @@ public class Exchange implements ExchangeInterface {
             return OpenOrderResult.FAILED;
         }
 
-        return engine.openOrder(new Order(currencyPair, amount, 0, price, direction, clientOrderId, address, sign));
+//        return engine.openOrder(new Order(currencyPair, amount, 0, price, direction, clientOrderId, address, sign));
+        return OpenOrderResult.SUCCESS;
     }
 
     @Override
