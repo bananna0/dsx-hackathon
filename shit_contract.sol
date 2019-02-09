@@ -14,22 +14,26 @@ contract StandardToken {
         currencyPair pair;
         bool isBuy;
     }
-    mapping (address => mapping (string => uint)) addressToWallet;
+    mapping (address => mapping(string => uint)) addressToWallet;
     mapping (address => mapping(string => order)) orderList;
     
     function deposit(string memory currency, uint amount) public {
         addressToWallet[msg.sender][currency] += amount;
     }
     
-    function createOrder(uint amount, uint rate, string memory orderId, string memory signature, currencyPair memory pair, bool isBuy) public {
+    function createOrder(address userAddress, uint amount, uint rate, string memory orderId, string memory signature, string memory baseCur, string memory quotedCur, bool isBuy) public {
+        currencyPair memory pair = currencyPair({
+            baseCur: baseCur,
+            quotedCur: quotedCur
+        });
         if (isBuy) {
            uint currentAmount = addressToWallet[msg.sender][pair.quotedCur];
            require(amount * rate <= currentAmount);
-           addressToWallet[msg.sender][pair.quotedCur] -= amount * rate;
+           addressToWallet[userAddress][pair.quotedCur] -= amount * rate;
         } else {
            uint currentAmount = addressToWallet[msg.sender][pair.baseCur];
            require(amount <= currentAmount);
-           addressToWallet[msg.sender][pair.baseCur] -= amount;
+           addressToWallet[userAddress][pair.baseCur] -= amount;
         }
         
         order memory newOrder = order({amount: amount, rate: rate, pair: pair, isBuy: isBuy});
@@ -59,10 +63,5 @@ contract StandardToken {
         if (orderB.amount == 0) {
             delete orderList[addressB][orderIdB];
         }
-    }
-    
-    function getState() public view returns (order memory currentOrder) {
-        mapping (string => order) storage orders = orderList[msg.sender];
-        currentOrder = orders['TEST'];
     }
 }
