@@ -16,8 +16,8 @@ public class MockExchange implements ExchangeInterface {
     }
 
     @Override
-    public boolean cancelOrder(long clientOrderId) {
-        log.info("cancelOrder, clientOrderId={}", clientOrderId);
+    public boolean cancelOrder(long clientOrderId, String address, String sign) {
+        log.info("cancelOrder, clientOrderId={}, address={}, sign={}", clientOrderId, address, sign);
         return true;
     }
 }
