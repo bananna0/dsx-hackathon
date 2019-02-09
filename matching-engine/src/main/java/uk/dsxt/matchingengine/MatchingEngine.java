@@ -41,44 +41,46 @@ public class MatchingEngine {
                 for (Iterator<PriceLevel> levelIterator = sellSide.iterator(); levelIterator.hasNext(); ) {
                     PriceLevel level = levelIterator.next();
 
-                    if (orderToOpen.getPrice() >= level.getPrice()) {
+                    if (orderToOpen.getPrice() < level.getPrice()) {
+                        break;
+                    }
 
-                        for (Iterator<Order> orderIterator = level.getOrders().iterator(); orderIterator.hasNext(); ) {
-                            Order order = orderIterator.next();
+                    for (Iterator<Order> orderIterator = level.getOrders().iterator(); orderIterator.hasNext(); ) {
+                        Order order = orderIterator.next();
 
-                            long minAmount = Long.min(orderToOpen.getAmount(), order.getAmount());
+                        long minAmount = Long.min(orderToOpen.getAmount(), order.getAmount());
 
-                            long orderAmountUpdated = order.getAmount() - minAmount;
-                            order.setAmount(orderAmountUpdated);
+                        long orderAmountUpdated = order.getAmount() - minAmount;
+                        order.setAmount(orderAmountUpdated);
 
-                            long orderToOpenAmountUpdated = orderToOpen.getAmount() - minAmount;
-                            orderToOpen.setAmount(orderToOpenAmountUpdated);
+                        long orderToOpenAmountUpdated = orderToOpen.getAmount() - minAmount;
+                        orderToOpen.setAmount(orderToOpenAmountUpdated);
 
-                            Trade trade = new Trade(minAmount, level.getPrice());
-                            log.debug("Trade created: {}" + trade);
-                            trades.add(trade);
+                        Trade trade = new Trade(minAmount, level.getPrice());
+                        log.debug("Trade created: {}" + trade);
+                        trades.add(trade);
 
-                            if (orderAmountUpdated == 0) {
-                                orderIterator.remove();
-                            }
-
-                            if (orderToOpenAmountUpdated == 0) {
-                                break;
-                            }
+                        if (orderAmountUpdated == 0) {
+                            orderIterator.remove();
                         }
 
-                        if (level.getOrders().isEmpty()) {
-                            levelIterator.remove();
+                        if (orderToOpenAmountUpdated == 0) {
+                            break;
                         }
+                    }
 
+                    if (level.getOrders().isEmpty()) {
+                        levelIterator.remove();
                     }
                 }
 
                 if (orderToOpen.getAmount() > 0) {
-
+                    if (!buySide.isEmpty() && buySide.peek().getPrice() >= orderToOpen.getPrice()) {
+                        log.error("FATAL EXCEPTION - SERVER STOPPED");
+                        return OpenOrderResult.FATAL_ERROR;
+                    }
+                    buySide.add(new PriceLevel(orderToOpen));
                 }
-
-                // TODO put order to buy side
 
                 // TODO Return trades
 
