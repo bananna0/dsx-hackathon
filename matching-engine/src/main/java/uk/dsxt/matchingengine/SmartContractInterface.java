@@ -7,4 +7,5 @@ public interface SmartContractInterface {
                      long sellerAmount, long sellerClientOrderId, String sellerAddress, String sellerSign,
                      String exchangeSing);
 
+    boolean lockMoney(long amount, String signature);
 }
