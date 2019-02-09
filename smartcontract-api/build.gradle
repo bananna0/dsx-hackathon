@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'uk.dsxt'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.projectlombok:lombok:1.18.4"
+    compile "org.apache.logging.log4j:log4j-api:2.11.1"
+    compile "org.apache.logging.log4j:log4j-core:2.11.1"
+    compile "org.web3j:core:4.1.1"
+    compile(project(":matching-engine"))
+
+    testCompile "org.testng:testng:6.10"
+}

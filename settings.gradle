@@ -1,3 +1,4 @@
 rootProject.name = 'hackathon'
 include 'matching-engine'
 include 'exchange-api'
+include 'smartcontract-api'
