@@ -4,12 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.dsxt.matchingengine.Exchange;
 import uk.dsxt.matchingengine.ExchangeInterface;
-import uk.dsxt.matchingengine.SmartContractInterfaceMockImpl;
+import uk.dsxt.matchingengine.SmartContractInterfaceImpl;
 
 @Configuration
 public class ExchangeApiConfiguration {
     @Bean
     public ExchangeInterface exchangeInterface() {
-        return new Exchange(new SmartContractInterfaceMockImpl());
+        return new Exchange(new SmartContractInterfaceImpl());
     }
 }
