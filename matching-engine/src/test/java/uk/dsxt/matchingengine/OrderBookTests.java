@@ -22,11 +22,15 @@ public class OrderBookTests extends BaseTest {
         Assert.assertEquals(orderBook.getBuySide().length, 0);
     }
 
+    //TODO same test with sell side
+
+    //TODO test when place LIMIT order with grater amount that filled
+
     /**
      * Make order and look that orderbook has been created
      */
     @Test
-    public void makeOSimpleOrderBook() {
+    public void makeSimpleOrderBook() {
         testExchange.openOrder(eurusd, 4, 3, OrderDirection.SELL, 1, addressClient1, signClient1);
         testExchange.openOrder(eurusd, 2, 1, OrderDirection.BUY, 1, addressClient1, signClient1);
         OrderBook orderBook = testExchange.getOrderbook(eurusd);
