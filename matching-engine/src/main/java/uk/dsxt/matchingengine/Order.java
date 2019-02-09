@@ -1,11 +1,16 @@
 package uk.dsxt.matchingengine;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class Order {
-    private String currencyPair;
-    private long amount;
-    private long price;
-    private OrderDirection direction;
-    private long clientOrderId;
-    private String address;
-    private String sign;
+    String currencyPair;
+    long amount;
+    long price;
+    OrderDirection direction;
+    long clientOrderId;
+    String address;
+    String sign;
 }
